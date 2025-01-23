@@ -4,16 +4,24 @@ template <class T>
 class Stack
 {
 private:
-	T* container;
-	size_t capacity;
-	size_t size;
+	using value_type = T;
+	using container_type = T*;
+	using size_type = size_t;
+	using reference = value_type&;
+	using const_reference = const value_type&;
+
+	container_type container;
+	size_type capacity;
+	size_type size;
 public:
 	Stack();
+	~Stack();
+	T top();
+	bool empty();
+	size_type getSize();
 	void push(const T& elem);
 	void pop();
-	T top();
-	size_t getCapacity();
-	size_t getSize();
+	size_type getCapacity();
 	void print();
 };
 
@@ -23,6 +31,15 @@ inline Stack<T>::Stack()
 	capacity = 10;
 	size = 0;
 	container = new T[capacity];
+}
+
+template<class T>
+inline Stack<T>::~Stack()
+{
+	if (container != nullptr)
+		delete container;
+	capacity = 0;
+	size = 0;
 }
 
 template<class T>
@@ -69,7 +86,13 @@ inline void Stack<T>::pop()
 template<class T>
 inline T Stack<T>::top()
 {
-	return container[0];
+	return size == 0 ? 0 : container[0];
+}
+
+template<class T>
+inline bool Stack<T>::empty()
+{
+	return size == 0;
 }
 
 template<class T>
